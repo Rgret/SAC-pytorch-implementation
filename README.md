@@ -59,4 +59,4 @@ plot_logs.py: Script for plotting the training logs.
 ```
 
 ## Acknowledgements
-This implementation is inspired by the SAC implementation from OpenAI Spinning Up. The code has been simplified and adapted for the Pendulum-v1 environment.
+This implementation is inspired by the SAC implementation from OpenAI Spinning Up. The code has been simplified.
