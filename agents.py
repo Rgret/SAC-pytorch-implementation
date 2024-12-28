@@ -70,9 +70,9 @@ class Actor(nn.Module):
             nn.init.zeros_(layer.bias)
 
     def forward(self, state, deterministic=False, with_logprob=True):
-        l1 = F.tanhshrink(self.l1(state.to(self.device)))
-        l2 = F.tanhshrink(self.l2(l1))
-        l3 = F.tanhshrink(self.l3(l2))
+        l1 = F.tanh(self.l1(state.to(self.device)))
+        l2 = F.tanh(self.l2(l1))
+        l3 = F.tanh(self.l3(l2))
         mean = self.mean(l3)
         sigma = self.sigma(l3)
         sigma = torch.clamp(sigma, min=self.log_std_min, max=self.log_std_max).to(self.device)
@@ -135,9 +135,9 @@ class Critic(nn.Module):
 
     def forward(self, state, action):
         state_action = torch.cat([state, action], -1).to(self.device)
-        l1 = F.tanhshrink(self.l1(state_action))
-        l2 = F.tanhshrink(self.l2(l1))
-        l3 = F.tanhshrink(self.l3(l2))
+        l1 = F.tanh(self.l1(state_action))
+        l2 = F.tanh(self.l2(l1))
+        l3 = F.tanh(self.l3(l2))
         q = self.q(l3)
 
         return torch.squeeze(q, -1).to(self.device)
