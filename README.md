@@ -44,7 +44,7 @@ Available arguments:
 ## Plotting: 
 Plot the training metrics (Average Q-values, Log Pi, Loss Pi, Loss Q) using the provided plot_logs.py script. Make sure to update the file_path variable in the script to point to your log file (e.g., my_logs/logs.txt if you used the --log_dir argument).
 ```bash
-py logs/plot_logs.py
+py Logs/plot_logs.py
 ```
 
 ## Code Structure
@@ -59,4 +59,4 @@ plot_logs.py: Script for plotting the training logs.
 ```
 
 ## Acknowledgements
-This implementation is inspired by the SAC implementation from OpenAI Spinning Up. The code has been simplified and adapted for the Pendulum-v1 environment.
+This implementation is inspired by the SAC implementation from OpenAI Spinning Up. The code has been simplified.
