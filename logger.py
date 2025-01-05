@@ -4,6 +4,8 @@ import os.path
 import time
 import utils
 
+# based on https://github.com/openai/spinningup/blob/master/spinup/utils/logx.py
+
 class Logger():
     def __init__(self, output_dir = None, output_fname="logs.txt", exp_name=None):
         self.output_dir = output_dir or "/Network/tests/%i"%int(time.time())

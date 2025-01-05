@@ -33,6 +33,7 @@ Available arguments:
 --batch_size: Batch size for updates.
 --alpha: Temperature parameter alpha.
 --final_alpha: Final value for temperature parameter alpha.
+--const_alpha: Use constant value for alpha.
 --anneal_alpha_steps: Number of steps to anneal alpha.
 --env: Environment from gymnasium (default: "Pendulum-v1")
 --log_dir: Directory to save logs (default: "Logs").

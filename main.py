@@ -1,7 +1,7 @@
 import argparse
-from SAC import SAC  # Assuming you have an SAC implementation in SAC.py
-from logger import Logger # Assuming you have a Logger implementation in logger.py
-import utils  # Assuming you have utility functions in utils.py
+from SAC import SAC
+from logger import Logger 
+import utils
 import gymnasium as gym
 import torch
 
@@ -29,7 +29,8 @@ def main(args):
             episode_reward = 0
             episode_over = False
             while not episode_over:
-                agent.alpha = utils.get_alpha(agent.current_step, 0.8, args.final_alpha, args.anneal_alpha_steps)
+                if not args.const_alpha:  # use contant value for alpha if flag set
+                    agent.alpha = utils.get_alpha(agent.current_step, 0.8, args.final_alpha, args.anneal_alpha_steps)
 
                 action = agent.get_action(observation)
 
@@ -57,6 +58,9 @@ def main(args):
             logger.log_tabular('LossQ', avg_only=True)
             logger.dump_tabular()
 
+    if agent.current_step < agent.learn_after:
+        print("Total ammount of steps was lower than learn_after resulting in no training beeing done.")
+
     if args.save_model:  # Save model if flag is set
         agent.save(path=args.ckpt_dir)
 
@@ -70,8 +74,9 @@ if __name__ == "__main__":
     parser.add_argument("--buffer_size", type=int, default=int(1e6), help="Replay buffer size.")
     parser.add_argument("--learn_after", type=int, default=1_000, help="Steps before learning starts.")
     parser.add_argument("--batch_size", type=int, default=64, help="Batch size for updates.")
-    parser.add_argument("--alpha", type=float, default=0.2, help="Temperature parameter alpha.")
-    parser.add_argument("--final_alpha", type=float, default=0.01, help="Final value for temperature parameter alpha.")
+    parser.add_argument("--alpha", type=float, default=0.8, help="Temperature parameter alpha.")
+    parser.add_argument("--const_alpha", action="store_true", help="Use constant value for alpha.")
+    parser.add_argument("--final_alpha", type=float, default=0.1, help="Final value for temperature parameter alpha.")
     parser.add_argument("--anneal_alpha_steps", type=int, default=100_000, help="Number of steps to anneal alpha.")
     parser.add_argument("--log_dir", type=str, default="Logs", help="Directory to save logs.")
     parser.add_argument("--ckpt_dir", type=str, default="Network", help="Directory to save checkpoints.")
@@ -79,7 +84,6 @@ if __name__ == "__main__":
     parser.add_argument("--force_cpu", action="store_true", help="Force using CPU even if CUDA is available.")
     parser.add_argument("--env", type=str, default="Pendulum-v1", help="Gym environment ID.")
     parser.add_argument("--render", action="store_true", help="Render the environment.")
-
 
     args = parser.parse_args()
     main(args)
